@@ -25,9 +25,14 @@ input = raw_input("Enter a ranked summoner name: ")
 ID=getSummonerID(nameAPI(input)) #gets you summoner ID. If you need to make more calls to nameAPI then have nameAPI go straight into an object
 league_obj=leagueAPI(ID)
 people= league_obj[str(ID)][0]["entries"]
-toprint=None
+
 for person in people:#prints current tier/div of player
-	if person["playerOrTeamName"]==input:
-		line= "%s %s, %d wins and %d losses"%(league_obj[str(ID)][0]["tier"], person["division"], person["wins"], person["losses"])
+	if person["playerOrTeamId"] == league_obj[str(ID)][0]["participantId"]:
+		line= "%s is currently in %s %s with %d wins and %d losses"%(person["playerOrTeamName"],league_obj[str(ID)][0]["tier"], person["division"], person["wins"], person["losses"])
 		print line
-		print "This summoner's id is %d"%(person["
+		line2 = 'This summoner has %dLP' %(person["leaguePoints"])
+		if(person["leaguePoints"] ==100):
+			line2 += ' and is in Promos. Currently has %d wins and %d losses and needs %d wins to advance.'%(person['miniSeries']['wins'],person['miniSeries']['losses'],person['miniSeries']['target'])
+		print line2
+		#print "This summoner's id is %s"%(league_obj[str(ID)][0]["participantId"])
+		break
