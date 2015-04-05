@@ -20,17 +20,38 @@ def nameAPI(name):
 		return result_object
 	else:
 		print ("Input was bad")
+def statsAPI(ID):
+	request = Request(pre+"/api/lol/na/v1.3/stats/by-summoner/"+str(ID)+"/summary"+key)
+	ret=attempt(request)
+	if ret!=None:
+		result_object = json.loads(ret)
+		return result_object
+	else:
+		print ("Input was bad")
 def getSummonerID(target):
 	keys=list(target)
 	return target[keys[0]]["id"]
 def getSummonerLevel(target):
 	keys=list(target)
 	return target[keys[0]]["summonerLevel"]
+
 name=raw_input("Put in a summoner name: ")
 start=time.time()
-stuff=nameAPI(name)
+nameAPI=nameAPI(name)
+stats=statsAPI(getSummonerID(nameAPI))
+obs= stats[list(stats)[0]]
 
-print getSummonerID(stuff)
-print getSummonerLevel(stuff)
+totalKills=0
+
+for ob in obs:	
+	try:
+		print str(ob["aggregatedStats"]["totalChampionKills"]) +" kills in "+ob["playerStatSummaryType"]
+	except KeyError, e:
+		continue
+
+print totalKills
+#print getSummonerID(nameAPI)
+#print getSummonerLevel(nameAPI)
+
 print "Time elapse was: "+str(time.time()-start)+" seconds"
-#print "Summoner Level is: "+str(getSummonerLevel(name))
+#print "Summoner Level is: "+str(getSummonerLevel(name))32963033
