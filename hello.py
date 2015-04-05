@@ -34,22 +34,17 @@ def getSummonerID(target):
 def getSummonerLevel(target):
 	keys=list(target)
 	return target[keys[0]]["summonerLevel"]
-
 name=raw_input("Put in a summoner name: ")
 start=time.time()
 nameAPI=nameAPI(name)
 stats=statsAPI(getSummonerID(nameAPI))
 obs= stats[list(stats)[0]]
-
-totalKills=0
-
 for ob in obs:	
 	try:
 		print str(ob["aggregatedStats"]["totalChampionKills"]) +" kills in "+ob["playerStatSummaryType"]
 	except KeyError, e:
-		continue
+		continue#gets all kills in all gamemodes
 
-print totalKills
 #print getSummonerID(nameAPI)
 #print getSummonerLevel(nameAPI)
 
