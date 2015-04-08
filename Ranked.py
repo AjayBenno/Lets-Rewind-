@@ -1,7 +1,6 @@
 import urllib2
 import json
 import types,time
-
 key="?api_key=8ec0f7d1-2a67-4cc9-a0d5-30042337ad49"
 pre="https://na.api.pvp.net/"
 def nameAPI(name):
@@ -21,8 +20,14 @@ def leagueAPI(ID):
 		return json_obj
 	except urllib2.HTTPError,e:
 		raise ValueError('Exception raised '+ str(e) +' This summoner is most likely not ranked.')
-input = raw_input("Enter a ranked summoner name: ")
-ID=getSummonerID(nameAPI(input)) #gets you summoner ID. If you need to make more calls to nameAPI then have nameAPI go straight into an object
+input = raw_input("Enter a summoner name: ")
+
+nameOBJ= nameAPI(input) #gets you summoner ID. If you need to make more calls to nameAPI then have nameAPI go straight into an object
+LEVEL=nameOBJ[list(nameOBJ)[0]]["summonerLevel"]
+ID=getSummonerID(nameOBJ)
+if LEVEL<30:
+	print '%s is currently at level %d and is unranked'%(input,LEVEL)
+	quit()
 league_obj=leagueAPI(ID)
 people= league_obj[str(ID)][0]["entries"]
 
